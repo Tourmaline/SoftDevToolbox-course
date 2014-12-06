@@ -1,0 +1,39 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+%opening
+\title{Software development toolbox course//Notes}
+\author{Anastasia Kruchinina}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Compiling Ergo with CMake. Usage of testing tools as CTest and CDash, or maybe something else.
+``CMake is a cross-platform build systems generator which makes
+it easier to build software in a unified manner on a broad set
+of platforms''.
+
+
+Even the most simple project should never mix-up sources with
+generated files. CMake supports out-of-source build. Create for example build directory and run cmake from it, all cmake files will be located in build directory.
+A good practice is to set a guard (cmake file) which prevent in-source build.
+
+
+
+
+\end{abstract}
+
+\section{Introduction to CMake}
+
+There are not so many good tutorial about CMake. I am using excellect slides of Eric NOULARD from github (https://github.com/TheErk/CMake-tutorial).
+
+
+\section{Diffuculties}
+
+
+\section{Autotools vs. CMake}
+
+
+\end{document}
