@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake
     )
 
-#include(ConfigSafeGuards)
+include(ConfigSafeGuards)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
     set(CMAKE_CXX_FLAGS         "-Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused")
@@ -56,7 +56,25 @@ target_link_libraries(
     pthread
     )
 
+install(TARGETS unit_tests example gtest
+RUNTIME DESTINATION bin
+LIBRARY DESTINATION lib
+ARCHIVE DESTINATION lib/static )
+
+file(GLOB files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+install(FILES ${files} DESTINATION include)
+
 include(CTest)
 enable_testing()
 
 add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
+
+
+
+set(CPACK GENERATOR "TGZ")
+# Setup package version
+set(CPACK PACKAGE VERSION MAJOR 0)
+set(CPACK PACKAGE VERSION MINOR 1)
+set(CPACK PACKAGE VERSION PATCH 0)
+# ’call’ CPack
+include(CPack)
