@@ -1,8 +1,14 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 
+\usepackage{hyperref}
+\usepackage{listings}
+\lstset{language=C}
+
+
+
 %opening
-\title{Software development toolbox course//Notes}
+\title{cmake - Cross-Platform Makefile Generator}
 \author{Anastasia Kruchinina}
 
 \begin{document}
@@ -29,13 +35,90 @@ A good practice is to set a guard (cmake file) which prevent in-source build.
 
 \section{Introduction to CMake}
 
-There are not so many good tutorial about CMake. I am using excellect slides of Eric NOULARD from github (https://github.com/TheErk/CMake-tutorial).
+There are not so many good tutorial about CMake. I am using slides of Eric NOULARD from github (\url{https://github.com/TheErk/CMake-tutorial}).
 
 
 \section{Diffuculties}
 
 
 \section{Autotools vs. CMake}
+
+
+
+\section{Ctest and CDash}
+\subsection{Testing}
+
+Useful links:
+
+\url{http://www.vtk.org/Wiki/CMake/Testing_With_CTest}
+
+
+\texttt{enable\_testing()} -  adds another build target, which is test for Makefile generators, or RUN\_TESTS for integrated development environments (like Visual Studio).
+
+
+\begin{verbatim}
+ add_test(NAME <name> [CONFIGURATIONS [Debug|Release|...]]
+            [WORKING\_DIRECTORY dir]
+            COMMAND <command> [arg1 [arg2 ...]])
+\end{verbatim}
+
+\subsection{Dashboard}
+
+The result of a test run, reformatted for easy review, is called a "dashboard".
+            
+The default settings of the module are to submit the dashboard to Kitware's Public Dashboard, where you can register your project for free.
+
+In order to submit to some other server, "CTestConfig.cmake" in the top level directory of your source, and set your own dashboard preferences. If you are using a CDash server, you can download a preconfigured file from the respective project page on that server ("Settings" / "Project", tab "Miscellaneous").
+
+
+There are three types of dashboard submissions:
+\begin{description}
+ \item[Experimental] means the current state of the project. An experimental submission can be performed at any time, usually interactively from the current working copy of a developer.
+  \item[Nightly] is similar to experimental, except that the source tree will be set to the state it was in at a specific nightly time. This ensures that all "nightly" submissions correspond to the state of the project at the same point in time. "Nightly" builds are usually done automatically at a preset time of day.
+ \item[Continuous] means that the source tree is updated to the latest revision, and a build / test cycle is performed only if any files were actually updated. Like "Nightly" builds, "Continuous" ones are usually done automatically and repeatedly in intervals.
+\end{description}
+
+\subsection{Code coverage}
+
+\url{http://www.cmake.org/Wiki/CTest/Coverage}
+\url{http://en.wikipedia.org/wiki/Gcov}
+
+Currently coverage is only supported on gcc compiler. To perform coverage test, make sure that your code is built with debug symbols, without optimization, and with special flags. These flags are:
+\texttt{-fprofile-arcs -ftest-coverage}
+
+\url{http://en.wikipedia.org/wiki/Code_coverage}
+
+In computer science, code coverage is a measure used to describe the degree to which the source code of a program is tested by a particular test suite. 
+
+CDash Free Edition doesn't allow more than 10 builds a day
+
+\begin{verbatim}
+Start -> Update (only Nightly) -> Configure -> 
+Build -> Test -> Coverage -> Submit
+\end{verbatim}
+
+CTest maintains the following four metrics:
+\begin{itemize}
+\item Number of lines covered
+\item Number of lines not covered
+\item Total number of lines in code
+\item Percentage of coverage (number of covered lines/total lines)
+\end{itemize}
+
+CMake Scripting Of CTest + Cron:
+\begin{itemize}
+ \item \url{http://www.cmake.org/Wiki/CMake_Scripting_Of_CTest}
+\item\url{http://www.gofigure2.org/index.php/developers/2-uncategorised/30-setup-ctest-server.html}
+\item\url{https://techbase.kde.org/Development/CMake/DashboardBuilds#How_to_set_up_a_Nightly_build}
+\item\url{http://insightsoftwareconsortium.github.io/ITKBarCamp-doc/SoftwareQuality/DashboardSubmission/index.html}
+\end{itemize}
+
+\subsection{Ergo code}
+
+CDash for the Ergo code: \url{http://my.cdash.org/index.php?project=ergo_cmake}.
+
+We have bash scripts for testing. I copy the whole directory (notice that I changed paths in \texttt{test\_hf.sh}) into build. Then ctest run tests from the build directory.
+
 
 
 \end{document}
